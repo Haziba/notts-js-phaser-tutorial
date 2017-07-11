@@ -30,6 +30,13 @@ var mainState = {
 
 		// Create an empty group
 		this.pipes = game.add.group();
+
+		// Spawn a row of pipes every 1.5 seconds
+		this.timer = game.time.events.loop(1500, this.addRowOfPipes, this); 
+
+		// Initialise score
+		this.score = 0;
+		this.labelScore = game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });
 	},
 
 	update: function() {
@@ -81,6 +88,10 @@ var mainState = {
 		for (var i = 0; i < 8; i++)
 			if (i != hole && i != hole + 1) 
 				this.addOnePipe(400, i * 60 + 10);   
+
+		// Increment score each time a pipe row is created
+		this.score += 1;
+		this.labelScore.text = this.score;
 	},
 };
 
