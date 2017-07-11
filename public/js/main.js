@@ -3,6 +3,7 @@ var mainState = {
 	preload: function() { 
 		 // Load the bird sprite
 		 game.load.image('bird', 'assets/bird.png'); 
+		 game.load.image('pipe', 'assets/pipe.png'); 
 	 },
 
 	create: function() { 
@@ -26,6 +27,9 @@ var mainState = {
 		var spaceKey = game.input.keyboard.addKey(
 				Phaser.Keyboard.SPACEBAR);
 		spaceKey.onDown.add(this.jump, this);     
+
+		// Create an empty group
+		this.pipes = game.add.group();
 	},
 
 	update: function() {
@@ -45,6 +49,25 @@ var mainState = {
 	restartGame: function() {
 	     	// Start the 'main' state, which restarts the game
 	     	game.state.start('main');
+	},
+
+	// Add a pipe
+	addOnePipe: function(x, y) {
+		// Create a pipe at the position x and y
+		var pipe = game.add.sprite(x, y, 'pipe');
+
+		// Add the pipe to our previously created group
+		this.pipes.add(pipe);
+
+		// Enable physics on the pipe 
+		game.physics.arcade.enable(pipe);
+
+		// Add velocity to the pipe to make it move left
+		pipe.body.velocity.x = -200; 
+
+		// Automatically kill the pipe when it's no longer visible 
+		pipe.checkWorldBounds = true;
+		pipe.outOfBoundsKill = true;
 	},
 };
 
